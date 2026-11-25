@@ -24,19 +24,20 @@ LINE = (
 
 
 def validate_line(line: str) -> None:
-    """Gate: UTF-8 text of 1 to 600 characters, not only whitespace."""
+    """Gate: UTF-8 text of 1 to 600 characters, not only whitespace,
+    and about 100 words (the judge spends every word)."""
     if not line or not line.strip():
         raise ValueError("entry must not be empty or only whitespace")
     if len(line) > 600:
         raise ValueError(f"entry is {len(line)} characters, over the 600 cap")
+    words = line.split()
+    if not 90 <= len(words) <= 110:
+        raise ValueError(f"entry is {len(words)} words, expected about 100")
     line.encode("utf-8")
 
 
 def main() -> None:
     validate_line(LINE)
-    words = LINE.split()
-    if not 90 <= len(words) <= 110:
-        raise ValueError(f"entry is {len(words)} words, expected about 100")
     out_dir = "/output"
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
